@@ -194,6 +194,14 @@ export default function Map({ address, numDrones = 8, feetApart = 100, speed = 5
       }
     };
 
+    // Reset map when address changes
+    if (map.current) {
+      map.current.remove();
+      map.current = null;
+    }
+    markersRef.current = [];
+    dronePositionsRef.current = [];
+    
     geocodeAddress();
   }, [address]);
 

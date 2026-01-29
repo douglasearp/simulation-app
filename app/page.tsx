@@ -4,12 +4,19 @@ import { useState } from 'react';
 import Map from './components/Map';
 
 export default function Home() {
-  const startingAddress = '811 main street kansas city MO 64105';
+  const [address, setAddress] = useState('22643 w 89th street lenexa ks 66227');
+  const [addressInput, setAddressInput] = useState('22643 w 89th street lenexa ks 66227');
   const [numDrones, setNumDrones] = useState(8);
   const [feetApart, setFeetApart] = useState(100);
   const [speed, setSpeed] = useState(5);
   const [isMoving, setIsMoving] = useState(true);
   const [direction, setDirection] = useState('N');
+
+  const handleAddressSubmit = () => {
+    if (addressInput.trim()) {
+      setAddress(addressInput.trim());
+    }
+  };
 
   return (
     <main style={{ minHeight: '100vh', padding: '2rem', backgroundColor: '#ffffff', color: '#000000' }}>
@@ -21,8 +28,43 @@ export default function Home() {
           Next.js + React + TypeScript + Tailwind CSS + ESLint + MapLibre
         </p>
         <div style={{ marginBottom: '1rem' }}>
-          <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Starting Address:</p>
-          <p style={{ fontSize: '1.125rem', fontWeight: '600', color: '#000000' }}>{startingAddress}</p>
+          <label style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem', display: 'block' }}>
+            Address:
+          </label>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <input
+              type="text"
+              value={addressInput}
+              onChange={(e) => setAddressInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddressSubmit()}
+              placeholder="Enter address..."
+              style={{
+                padding: '0.5rem 0.75rem',
+                fontSize: '1rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                flex: 1,
+                maxWidth: '400px'
+              }}
+            />
+            <button
+              onClick={handleAddressSubmit}
+              style={{
+                padding: '0.5rem 1rem',
+                fontSize: '1rem',
+                fontWeight: '600',
+                border: 'none',
+                borderRadius: '6px',
+                backgroundColor: '#3b82f6',
+                color: '#ffffff',
+                cursor: 'pointer'
+              }}
+            >
+              Go
+            </button>
+          </div>
         </div>
         <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f3f4f6', borderRadius: '8px', display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'end' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -162,7 +204,7 @@ export default function Home() {
             <span style={{ color: '#3b82f6', fontWeight: '600' }}>●</span> Blue markers: {numDrones} drones ({feetApart}ft apart) - {isMoving ? `Moving ${direction} at ${speed} mph` : '(stopped)'}
           </p>
         </div>
-        <Map address={startingAddress} numDrones={numDrones} feetApart={feetApart} speed={speed} isMoving={isMoving} direction={direction} />
+        <Map address={address} numDrones={numDrones} feetApart={feetApart} speed={speed} isMoving={isMoving} direction={direction} />
       </div>
     </main>
   );
